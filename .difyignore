@@ -1,0 +1,36 @@
+# Version control
+.git/
+
+# Python artifacts
+__pycache__/
+*.py[codz]
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Lock files
+uv.lock
+poetry.lock
+
+# IDE
+.vscode/
+.idea/
+.ruff_cache/
+
+# Environment
+.env
+.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dify plugin packages
+*.difypkg
+
+# Dev config
+CLAUDE.md
+poetry.toml
