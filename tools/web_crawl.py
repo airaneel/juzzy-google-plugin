@@ -9,6 +9,7 @@ from trafilatura import fetch_url, extract
 class WebCrawlTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         url = tool_parameters.get("url", "").strip()
+        max_length = int(tool_parameters.get("max_length", 5000))
         if not url:
             yield self.create_text_message("URL is required.")
             return
@@ -60,6 +61,9 @@ class WebCrawlTool(Tool):
                 header_parts.append(" | ".join(meta_parts))
             if description:
                 header_parts.append(f"> {description}")
+
+            if max_length and len(content) > max_length:
+                content = content[:max_length] + "\n\n...(truncated)"
 
             text_output = "\n\n".join(header_parts + [content]) if header_parts else content
 

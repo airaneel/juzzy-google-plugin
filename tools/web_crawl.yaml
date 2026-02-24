@@ -25,6 +25,20 @@ parameters:
       pt_BR: The URL of the web page to crawl.
     llm_description: The full URL of the web page to fetch and extract content from.
     form: llm
+  - name: max_length
+    type: number
+    required: false
+    default: 5000
+    label:
+      en_US: Max content length
+      zh_Hans: Max content length
+      pt_BR: Max content length
+    human_description:
+      en_US: Maximum number of characters to return from the page content. Set to 0 for no limit.
+      zh_Hans: Maximum number of characters to return from the page content. Set to 0 for no limit.
+      pt_BR: Maximum number of characters to return from the page content. Set to 0 for no limit.
+    llm_description: "(Optional) Maximum number of characters for the extracted content. Default is 5000. Set to 0 for no limit."
+    form: form
 extra:
   python:
     source: tools/web_crawl.py
