@@ -1,0 +1,30 @@
+identity:
+  name: web_crawl
+  author: andyjazzy
+  label:
+    en_US: Web Crawl
+    zh_Hans: Web Crawl
+    pt_BR: Web Crawl
+description:
+  human:
+    en_US: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
+    zh_Hans: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
+    pt_BR: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
+  llm: Fetches a web page URL and extracts the main content as clean markdown text, removing navigation, ads, and boilerplate. Returns the article text with metadata (title, author, date). Use this after Google Search to get full page content from the result URLs.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: URL
+      zh_Hans: URL
+      pt_BR: URL
+    human_description:
+      en_US: The URL of the web page to crawl.
+      zh_Hans: The URL of the web page to crawl.
+      pt_BR: The URL of the web page to crawl.
+    llm_description: The full URL of the web page to fetch and extract content from.
+    form: llm
+extra:
+  python:
+    source: tools/web_crawl.py

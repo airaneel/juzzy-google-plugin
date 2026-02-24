@@ -1,0 +1,54 @@
+identity:
+  author: andyjazzy
+  name: google
+  label:
+    en_US: Google
+    zh_Hans: Google
+    pt_BR: Google
+  description:
+    en_US: Google
+    zh_Hans: Google
+    pt_BR: Google
+  icon: icon.svg
+  tags:
+    - search
+credentials_for_provider:
+  google_api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: Google API Key
+      zh_Hans: Google API Key
+      pt_BR: Google API Key
+    placeholder:
+      en_US: Please input your Google API Key
+      zh_Hans: Please input your Google API Key
+      pt_BR: Please input your Google API Key
+    help:
+      en_US: Get your Google API Key from Google Cloud Console
+      zh_Hans: Get your Google API Key from Google Cloud Console
+      pt_BR: Get your Google API Key from Google Cloud Console
+    url: https://console.cloud.google.com/apis/credentials
+  google_cx_id:
+    type: secret-input
+    required: true
+    label:
+      en_US: Custom Search Engine ID (CX)
+      zh_Hans: Custom Search Engine ID (CX)
+      pt_BR: Custom Search Engine ID (CX)
+    placeholder:
+      en_US: Please input your Custom Search Engine ID
+      zh_Hans: Please input your Custom Search Engine ID
+      pt_BR: Please input your Custom Search Engine ID
+    help:
+      en_US: Get your CX ID from Google Programmable Search Engine
+      zh_Hans: Get your CX ID from Google Programmable Search Engine
+      pt_BR: Get your CX ID from Google Programmable Search Engine
+    url: https://programmablesearchengine.google.com/controlpanel/all
+tools:
+  - tools/google_search.yaml
+  - tools/google_image_search.yaml
+  - tools/web_crawl.yaml
+extra:
+  python:
+    source: provider/google.py
