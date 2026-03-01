@@ -111,6 +111,14 @@ class WebCrawlTool(Tool):
                 yield self.create_text_message(f"No main content could be extracted from {url}")
                 return
 
+            # Check if content contains any of the query words
+            if query:
+                content_lower = content.lower()
+                query_words = query.lower().split()
+                if not any(word in content_lower for word in query_words):
+                    yield self.create_text_message(f"Page content not relevant to query: {url}")
+                    return
+
             if max_length and len(content) > max_length:
                 content = content[:max_length] + "\n\n...(truncated)"
 
