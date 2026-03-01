@@ -28,7 +28,12 @@ class GoogleSearchTool(Tool):
         try:
             service = build("customsearch", "v1", developerKey=api_key)
             result = service.cse().list(q=query, cx=cx_id, num=num, **optional_params).execute()
-            yield self.create_json_message(result)
+            items = [
+                {"title": item.get("title", ""), "url": item.get("link", ""), "snippet": item.get("snippet", "")}
+                for item in result.get("items", [])
+                if item.get("snippet")
+            ]
+            yield self.create_json_message(items)
 
         except HttpError as e:
             yield self.create_text_message(f"Google API error ({e.resp.status}): {e._get_reason()}")
