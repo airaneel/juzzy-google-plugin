@@ -4,30 +4,61 @@ from typing import Any, Generator
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from pypdf import PdfReader
 from trafilatura import extract, fetch_url
 
 _USER_AGENT = "Mozilla/5.0 (compatible; DifyBot/1.0)"
+_MAX_PDF_BYTES = 10 * 1024 * 1024  # 10 MB
+_TOP_K_PAGES = 5
 
 
-def _extract_pdf(url: str, max_length: int) -> str | None:
-    """Download a PDF and extract its text content."""
+def _score_page(text: str, terms: list[str]) -> int:
+    """Score a page by counting query term occurrences."""
+    lower = text.lower()
+    return sum(lower.count(t) for t in terms)
+
+
+def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
+    """Download a PDF (up to 10 MB) and extract relevant text content."""
     try:
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
-            pdf_bytes = resp.read()
-
-        from pypdf import PdfReader
+            content_length = resp.headers.get("Content-Length")
+            if content_length and int(content_length) > _MAX_PDF_BYTES:
+                return None
+            pdf_bytes = resp.read(_MAX_PDF_BYTES + 1)
+            if len(pdf_bytes) > _MAX_PDF_BYTES:
+                return None
 
         reader = PdfReader(io.BytesIO(pdf_bytes))
-        pages: list[str] = []
-        for page in reader.pages:
-            text = page.extract_text()
-            if text:
-                pages.append(text.strip())
 
-        content = "\n\n".join(pages)
-        if not content:
+        # Extract text from each page
+        page_texts: list[tuple[int, str]] = []
+        for i, page in enumerate(reader.pages):
+            text = page.extract_text()
+            if text and text.strip():
+                page_texts.append((i + 1, text.strip()))
+
+        if not page_texts:
             return None
+
+        # If query provided, select most relevant pages; otherwise first pages
+        terms = [t.lower() for t in query.split()] if query else []
+        if terms:
+            scored = [(page_num, text, _score_page(text, terms)) for page_num, text in page_texts]
+            scored.sort(key=lambda x: x[2], reverse=True)
+            # Take top-K pages that have at least one match
+            selected = [(num, text) for num, text, score in scored if score > 0][:_TOP_K_PAGES]
+            if not selected:
+                # No matches — fall back to first pages
+                selected = page_texts[:_TOP_K_PAGES]
+            # Sort by page number for readability
+            selected.sort(key=lambda x: x[0])
+        else:
+            selected = page_texts[:_TOP_K_PAGES]
+
+        parts = [f"--- Page {num} ---\n{text}" for num, text in selected]
+        content = "\n\n".join(parts)
 
         if max_length and len(content) > max_length:
             content = content[:max_length] + "\n\n...(truncated)"
@@ -40,6 +71,7 @@ class WebCrawlTool(Tool):
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         url = tool_parameters.get("url", "").strip()
         max_length = int(tool_parameters.get("max_length", 5000))
+        query = str(tool_parameters.get("query", "") or "").strip()
         if not url:
             yield self.create_text_message("URL is required.")
             return
@@ -47,7 +79,7 @@ class WebCrawlTool(Tool):
         try:
             # PDF URLs: download and parse directly
             if url.lower().endswith(".pdf"):
-                content = _extract_pdf(url, max_length)
+                content = _extract_pdf(url, max_length, query)
                 if content:
                     yield self.create_text_message(content)
                 else:

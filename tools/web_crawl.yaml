@@ -12,7 +12,7 @@ description:
     zh_Hans: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     pt_BR: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     ru_RU: Загружает веб-страницу и извлекает основное содержимое в формате markdown. Используйте для получения полного контента по URL из результатов Google Search.
-  llm: Fetches a web page URL and extracts the main content as clean markdown text, removing navigation, ads, and boilerplate. Returns the article text with metadata (title, author, date). Use this after Google Search to get full page content from the result URLs.
+  llm: Fetches a web page URL and extracts the main content as clean markdown text, removing navigation, ads, and boilerplate. Returns the article text with metadata (title, author, date). Use this after Google Search to get full page content from the result URLs. For PDF URLs, pass a query to extract the most relevant pages.
 parameters:
   - name: url
     type: string
@@ -45,6 +45,21 @@ parameters:
       ru_RU: Максимальное количество символов из содержимого страницы. Установите 0 для снятия ограничения.
     llm_description: "(Optional) Maximum number of characters for the extracted content. Default is 5000. Set to 0 for no limit."
     form: form
+  - name: query
+    type: string
+    required: false
+    label:
+      en_US: Search query
+      zh_Hans: Search query
+      pt_BR: Search query
+      ru_RU: Поисковый запрос
+    human_description:
+      en_US: Optional search query to extract the most relevant pages from PDF documents.
+      zh_Hans: Optional search query to extract the most relevant pages from PDF documents.
+      pt_BR: Optional search query to extract the most relevant pages from PDF documents.
+      ru_RU: Поисковый запрос для извлечения наиболее релевантных страниц из PDF-документов.
+    llm_description: "(Optional) When crawling a PDF URL, pass the search query here to extract only the most relevant pages instead of the first pages. The tool scores each page by keyword matches and returns the top 5."
+    form: llm
 extra:
   python:
     source: tools/web_crawl.py
