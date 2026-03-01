@@ -8,7 +8,6 @@ dependencies = [
     "dify-plugin>=0.5.1",
     "google-api-python-client>=2.100.0",
     "pypdf>=6.7.4",
-    "rank-bm25>=0.2.2",
     "trafilatura>=2.0.0",
 ]
 

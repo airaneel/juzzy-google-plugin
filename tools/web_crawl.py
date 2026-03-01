@@ -5,7 +5,6 @@ from typing import Any, Generator
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 from pypdf import PdfReader
-from rank_bm25 import BM25Okapi
 from trafilatura import extract, fetch_url
 
 _USER_AGENT = "Mozilla/5.0 (compatible; DifyBot/1.0)"
@@ -40,21 +39,12 @@ def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
         if not page_texts:
             return None
 
-        # BM25 ranking
-        corpus = [text.lower().split() for _, text in page_texts]
-        bm25 = BM25Okapi(corpus)
-        scores = bm25.get_scores(query.lower().split())
-
-        # Select top-K pages with score > 0
-        ranked = sorted(
-            zip(range(len(page_texts)), scores),
-            key=lambda x: x[1],
-            reverse=True,
-        )
+        # Select pages containing any query word
+        query_words = set(query.lower().split())
         selected = [
-            (page_texts[idx][0], page_texts[idx][1])
-            for idx, score in ranked
-            if score > 0
+            (num, text)
+            for num, text in page_texts
+            if query_words & set(text.lower().split())
         ][:_TOP_K_PAGES]
 
         if not selected:
