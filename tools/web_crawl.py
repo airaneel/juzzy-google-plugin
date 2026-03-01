@@ -42,20 +42,16 @@ def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
         if not page_texts:
             return None
 
-        # If query provided, select most relevant pages; otherwise first pages
-        terms = [t.lower() for t in query.split()] if query else []
-        if terms:
-            scored = [(page_num, text, _score_page(text, terms)) for page_num, text in page_texts]
-            scored.sort(key=lambda x: x[2], reverse=True)
-            # Take top-K pages that have at least one match
-            selected = [(num, text) for num, text, score in scored if score > 0][:_TOP_K_PAGES]
-            if not selected:
-                # No matches — fall back to first pages
-                selected = page_texts[:_TOP_K_PAGES]
-            # Sort by page number for readability
-            selected.sort(key=lambda x: x[0])
-        else:
-            selected = page_texts[:_TOP_K_PAGES]
+        if not query:
+            return None
+
+        terms = [t.lower() for t in query.split()]
+        scored = [(page_num, text, _score_page(text, terms)) for page_num, text in page_texts]
+        scored.sort(key=lambda x: x[2], reverse=True)
+        selected = [(num, text) for num, text, score in scored if score > 0][:_TOP_K_PAGES]
+        if not selected:
+            return None
+        selected.sort(key=lambda x: x[0])
 
         parts = [f"--- Page {num} ---\n{text}" for num, text in selected]
         content = "\n\n".join(parts)
