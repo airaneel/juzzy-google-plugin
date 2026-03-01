@@ -47,18 +47,18 @@ parameters:
     form: form
   - name: query
     type: string
-    required: false
+    required: true
     label:
       en_US: Search query
       zh_Hans: Search query
       pt_BR: Search query
       ru_RU: Поисковый запрос
     human_description:
-      en_US: Optional search query to extract the most relevant pages from PDF documents.
-      zh_Hans: Optional search query to extract the most relevant pages from PDF documents.
-      pt_BR: Optional search query to extract the most relevant pages from PDF documents.
-      ru_RU: Поисковый запрос для извлечения наиболее релевантных страниц из PDF-документов.
-    llm_description: "Search query for PDF content extraction. Provide this when the URL points to a PDF to get the most relevant pages."
+      en_US: Search query used to extract the most relevant pages from PDF documents. For HTML pages it is ignored.
+      zh_Hans: Search query used to extract the most relevant pages from PDF documents. For HTML pages it is ignored.
+      pt_BR: Search query used to extract the most relevant pages from PDF documents. For HTML pages it is ignored.
+      ru_RU: Поисковый запрос для извлечения наиболее релевантных страниц из PDF-документов. Для HTML-страниц игнорируется.
+    llm_description: "The user's search query. Used to extract relevant pages from PDFs. For HTML pages it is ignored."
     form: llm
 extra:
   python:
