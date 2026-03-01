@@ -5,6 +5,7 @@ from typing import Any, Generator
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 from pypdf import PdfReader
+from rank_bm25 import BM25Okapi
 from trafilatura import extract, fetch_url
 
 _USER_AGENT = "Mozilla/5.0 (compatible; DifyBot/1.0)"
@@ -12,14 +13,11 @@ _MAX_PDF_BYTES = 10 * 1024 * 1024  # 10 MB
 _TOP_K_PAGES = 5
 
 
-def _score_page(text: str, terms: list[str]) -> int:
-    """Score a page by counting query term occurrences."""
-    lower = text.lower()
-    return sum(lower.count(t) for t in terms)
-
-
 def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
     """Download a PDF (up to 10 MB) and extract relevant text content."""
+    if not query:
+        return None
+
     try:
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         with urllib.request.urlopen(req, timeout=30) as resp:  # noqa: S310
@@ -42,15 +40,27 @@ def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
         if not page_texts:
             return None
 
-        if not query:
-            return None
+        # BM25 ranking
+        corpus = [text.lower().split() for _, text in page_texts]
+        bm25 = BM25Okapi(corpus)
+        scores = bm25.get_scores(query.lower().split())
 
-        terms = [t.lower() for t in query.split()]
-        scored = [(page_num, text, _score_page(text, terms)) for page_num, text in page_texts]
-        scored.sort(key=lambda x: x[2], reverse=True)
-        selected = [(num, text) for num, text, score in scored if score > 0][:_TOP_K_PAGES]
+        # Select top-K pages with score > 0
+        ranked = sorted(
+            zip(range(len(page_texts)), scores),
+            key=lambda x: x[1],
+            reverse=True,
+        )
+        selected = [
+            (page_texts[idx][0], page_texts[idx][1])
+            for idx, score in ranked
+            if score > 0
+        ][:_TOP_K_PAGES]
+
         if not selected:
             return None
+
+        # Sort by page number for readability
         selected.sort(key=lambda x: x[0])
 
         parts = [f"--- Page {num} ---\n{text}" for num, text in selected]
