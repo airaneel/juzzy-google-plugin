@@ -1,15 +1,17 @@
 identity:
   name: web_crawl
-  author: andyjazzy
+  author: juzzy
   label:
     en_US: Web Crawl
     zh_Hans: Web Crawl
     pt_BR: Web Crawl
+    ru_RU: Извлечение веб-страниц
 description:
   human:
     en_US: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     zh_Hans: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     pt_BR: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
+    ru_RU: Загружает веб-страницу и извлекает основное содержимое в формате markdown. Используйте для получения полного контента по URL из результатов Google Search.
   llm: Fetches a web page URL and extracts the main content as clean markdown text, removing navigation, ads, and boilerplate. Returns the article text with metadata (title, author, date). Use this after Google Search to get full page content from the result URLs.
 parameters:
   - name: url
@@ -19,10 +21,12 @@ parameters:
       en_US: URL
       zh_Hans: URL
       pt_BR: URL
+      ru_RU: URL
     human_description:
       en_US: The URL of the web page to crawl.
       zh_Hans: The URL of the web page to crawl.
       pt_BR: The URL of the web page to crawl.
+      ru_RU: URL веб-страницы для извлечения.
     llm_description: The full URL of the web page to fetch and extract content from.
     form: llm
   - name: max_length
@@ -33,10 +37,12 @@ parameters:
       en_US: Max content length
       zh_Hans: Max content length
       pt_BR: Max content length
+      ru_RU: Макс. длина контента
     human_description:
       en_US: Maximum number of characters to return from the page content. Set to 0 for no limit.
       zh_Hans: Maximum number of characters to return from the page content. Set to 0 for no limit.
       pt_BR: Maximum number of characters to return from the page content. Set to 0 for no limit.
+      ru_RU: Максимальное количество символов из содержимого страницы. Установите 0 для снятия ограничения.
     llm_description: "(Optional) Maximum number of characters for the extracted content. Default is 5000. Set to 0 for no limit."
     form: form
 extra:

@@ -1,9 +1,8 @@
-import json
 from typing import Any, Generator
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
-from trafilatura import fetch_url, extract
+from trafilatura import extract, fetch_url
 
 
 class WebCrawlTool(Tool):
@@ -20,65 +19,23 @@ class WebCrawlTool(Tool):
                 yield self.create_text_message(f"Failed to fetch content from {url}")
                 return
 
-            # Extract metadata as JSON
-            meta_json = extract(html, output_format="json", with_metadata=True)
-            meta = json.loads(meta_json) if meta_json else {}
-
-            # Extract clean markdown content
             content = extract(
                 html,
-                output_format="markdown",
-                include_links=True,
+                url=url,
                 include_tables=True,
-                include_images=False,
-                include_formatting=True,
                 deduplicate=True,
                 favor_precision=True,
-                with_metadata=False,
+                with_metadata=True,
             )
 
             if not content:
                 yield self.create_text_message(f"No main content could be extracted from {url}")
                 return
 
-            title = meta.get("title", "")
-            author = meta.get("author", "")
-            date = meta.get("date", "")
-            sitename = meta.get("sitename", "")
-            description = meta.get("description", "")
-
-            header_parts = []
-            if title:
-                header_parts.append(f"# {title}")
-            meta_parts = []
-            if sitename:
-                meta_parts.append(f"Source: {sitename}")
-            if author:
-                meta_parts.append(f"Author: {author}")
-            if date:
-                meta_parts.append(f"Date: {date}")
-            if meta_parts:
-                header_parts.append(" | ".join(meta_parts))
-            if description:
-                header_parts.append(f"> {description}")
-
             if max_length and len(content) > max_length:
                 content = content[:max_length] + "\n\n...(truncated)"
 
-            text_output = "\n\n".join(header_parts + [content]) if header_parts else content
-
-            yield self.create_text_message(text_output)
-            yield self.create_json_message(
-                {
-                    "url": url,
-                    "title": title,
-                    "author": author,
-                    "date": date,
-                    "sitename": sitename,
-                    "description": description,
-                    "content": content,
-                }
-            )
+            yield self.create_text_message(content)
 
         except Exception as e:
-            yield self.create_text_message(f"Error crawling {url}: {str(e)}")
+            yield self.create_text_message(f"Error crawling {url}: {e!s}")

@@ -1,21 +1,37 @@
 [project]
-name = "google-search-plugin"
-version = "0.1.0"
-description = "Dify plugin for Google Custom Search"
+name = "juzzy-google-plugin"
+version = "0.2.0"
+description = "Dify plugin for Google Search, Image Search, and Web Crawl"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "dify-plugin>=0.5.1",
-    "pydantic>=2.12.3",
-    "loguru>=0.7.0",
-    "setuptools==80.9.0",
-    "sniffio==1.3.1",
     "google-api-python-client>=2.100.0",
     "trafilatura>=2.0.0",
 ]
 
 [dependency-groups]
 dev = [
-    "black>=25.9.0",
+    "mypy>=1.19.1",
     "ruff>=0.14.2",
 ]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_subclassing_any = false
+exclude = [".venv"]
+explicit_package_bases = true
+mypy_path = "."
+
+[[tool.mypy.overrides]]
+module = ["dify_plugin.*", "google.*", "googleapiclient.*", "trafilatura.*", "loguru.*"]
+ignore_missing_imports = true

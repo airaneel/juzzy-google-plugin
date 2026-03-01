@@ -1,14 +1,16 @@
 identity:
-  author: andyjazzy
+  author: juzzy
   name: google
   label:
     en_US: Google
     zh_Hans: Google
     pt_BR: Google
+    ru_RU: Google
   description:
     en_US: Google
     zh_Hans: Google
     pt_BR: Google
+    ru_RU: Google
   icon: icon.svg
   tags:
     - search
@@ -20,14 +22,17 @@ credentials_for_provider:
       en_US: Google API Key
       zh_Hans: Google API Key
       pt_BR: Google API Key
+      ru_RU: Ключ API Google
     placeholder:
       en_US: Please input your Google API Key
       zh_Hans: Please input your Google API Key
       pt_BR: Please input your Google API Key
+      ru_RU: Введите ваш ключ API Google
     help:
       en_US: Get your Google API Key from Google Cloud Console
       zh_Hans: Get your Google API Key from Google Cloud Console
       pt_BR: Get your Google API Key from Google Cloud Console
+      ru_RU: Получите ключ API Google в Google Cloud Console
     url: https://console.cloud.google.com/apis/credentials
   google_cx_id:
     type: secret-input
@@ -36,14 +41,17 @@ credentials_for_provider:
       en_US: Custom Search Engine ID (CX)
       zh_Hans: Custom Search Engine ID (CX)
       pt_BR: Custom Search Engine ID (CX)
+      ru_RU: ID поисковой системы (CX)
     placeholder:
       en_US: Please input your Custom Search Engine ID
       zh_Hans: Please input your Custom Search Engine ID
       pt_BR: Please input your Custom Search Engine ID
+      ru_RU: Введите ID вашей поисковой системы
     help:
       en_US: Get your CX ID from Google Programmable Search Engine
       zh_Hans: Get your CX ID from Google Programmable Search Engine
       pt_BR: Get your CX ID from Google Programmable Search Engine
+      ru_RU: Получите CX ID в Google Programmable Search Engine
     url: https://programmablesearchengine.google.com/controlpanel/all
 tools:
   - tools/google_search.yaml

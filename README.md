@@ -1,10 +1,26 @@
-# Google Search
+# Google Search Plugin for Dify
 
-## Overview
+Google Search, Image Search, and Web Crawl tools powered by the Google Custom Search API.
 
-The Google Search plugin uses the Google Custom Search JSON API to perform web and image searches, returning structured results. It requires a Google API Key and a Custom Search Engine ID (CX).
+## Tools
 
-## Configuration
+- **Google Search** — web search with structured results (JSON for workflows, XML for agents)
+- **Google Image Search** — image search with metadata (dimensions, thumbnails, source)
+- **Web Crawl** — fetch any URL and extract clean markdown content using trafilatura
+
+## Installation
+
+### From GitHub
+
+In your Dify instance, go to **Plugins > Install from GitHub** and enter this repository URL.
+
+### Manual
+
+1. Clone this repository
+2. Package with `dify plugin package ./`
+3. Upload the `.difypkg` file via **Plugins > Install from local file**
+
+## Setup
 
 ### 1. Enable the Custom Search API
 
@@ -12,28 +28,16 @@ Go to the [Google Cloud Console](https://console.cloud.google.com/apis/library/c
 
 ### 2. Create an API Key
 
-Go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials) in the Google Cloud Console and create an API Key.
+Go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials) and create an API Key.
 
 ### 3. Create a Custom Search Engine
 
-Go to the [Programmable Search Engine](https://programmablesearchengine.google.com/controlpanel/all) control panel, create a new search engine, and copy the **Search Engine ID** (CX).
+Go to [Programmable Search Engine](https://programmablesearchengine.google.com/controlpanel/all), create a new search engine, and copy the **Search Engine ID** (CX).
 
-### 4. Get Google tools from Plugin Marketplace
+### 4. Configure in Dify
 
-The Google tools can be found at the Plugin Marketplace, please install it first.
+Navigate to **Tools > Google > Authorize** and enter your **Google API Key** and **Custom Search Engine ID (CX)**.
 
-### 5. Fill in the configuration in Dify
+## Usage
 
-On the Dify navigation page, click `Tools > Google > To authorize` and fill in both the **Google API Key** and the **Custom Search Engine ID (CX)**.
-
-### 6. Use the tool
-
-You can use the Google tool in the following application types:
-
-#### Chatflow / Workflow applications
-
-Both Chatflow and Workflow applications support adding a Google tool node.
-
-#### Agent applications
-
-Add the Google tool in the Agent application, then enter online search instructions to call this tool.
+Works in Chatflow, Workflow, and Agent applications. When using Google Search in an Agent, enable the **"Used in Agent nodes"** parameter for optimized output formatting.

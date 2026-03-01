@@ -1,15 +1,17 @@
 identity:
   name: google_image_search
-  author: Dify
+  author: juzzy
   label:
     en_US: Google Image Search
     zh_Hans: Google Image Search
     pt_BR: Google Image Search
+    ru_RU: Поиск изображений Google
 description:
   human:
     en_US: A tool for performing a Google image search and extracting images. Input should be a search query.
     zh_Hans: A tool for performing a Google image search and extracting images. Input should be a search query.
     pt_BR: A tool for performing a Google image search and extracting images. Input should be a search query.
+    ru_RU: Инструмент для поиска изображений в Google. На вход подаётся поисковый запрос.
   llm: A tool for performing a Google image search and extracting images. Input should be a search query.
 parameters:
   - name: query
@@ -19,10 +21,12 @@ parameters:
       en_US: Query string
       zh_Hans: Query string
       pt_BR: Query string
+      ru_RU: Поисковый запрос
     human_description:
       en_US: used for searching
       zh_Hans: used for searching
       pt_BR: used for searching
+      ru_RU: используется для поиска
     llm_description: key words for searching
     form: llm
   - name: hl
@@ -32,10 +36,12 @@ parameters:
       en_US: Language
       zh_Hans: Language
       pt_BR: Language
+      ru_RU: Язык
     human_description:
       en_US: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
       zh_Hans: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
       pt_BR: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
+      ru_RU: Двухбуквенный код языка для поиска (например, en — английский, es — испанский, fr — французский).
     llm_description: Language
     form: llm
   - name: gl
@@ -45,10 +51,12 @@ parameters:
       en_US: Country
       zh_Hans: Country
       pt_BR: Country
+      ru_RU: Страна
     human_description:
       en_US: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
       zh_Hans: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
       pt_BR: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
+      ru_RU: Двухбуквенный код страны для поиска (например, us — США, uk — Великобритания, fr — Франция).
     llm_description: Country
     form: llm
   - name: max_results
@@ -58,9 +66,11 @@ parameters:
     label:
       en_US: Max results
       zh_Hans: Max results
+      ru_RU: Макс. результатов
     human_description:
       en_US: Maximum number of results (up to 10).
       zh_Hans: Maximum number of results (up to 10).
+      ru_RU: Максимальное количество результатов (до 10).
     form: form
   - name: imgsz
     type: select
@@ -70,47 +80,56 @@ parameters:
     human_description:
       en_US: Parameter defines the size of images.
       zh_Hans: Parameter defines the size of images.
+      ru_RU: Размер изображений.
     form: form
     label:
       en_US: Image size
       zh_Hans: Image size
       pt_BR: Image size
+      ru_RU: Размер изображения
     options:
       - value: icon
         label:
           en_US: Icon
           zh_Hans: Icon
           pt_BR: Icon
+          ru_RU: Иконка
       - value: small
         label:
           en_US: Small
           zh_Hans: Small
           pt_BR: Small
+          ru_RU: Маленький
       - value: medium
         label:
           en_US: Medium
           zh_Hans: Medium
           pt_BR: Medium
+          ru_RU: Средний
       - value: large
         label:
           en_US: Large
           zh_Hans: Large
           pt_BR: Large
+          ru_RU: Большой
       - value: xlarge
         label:
           en_US: Extra Large
           zh_Hans: Extra Large
           pt_BR: Extra Large
+          ru_RU: Очень большой
       - value: xxlarge
         label:
           en_US: Extra Extra Large
           zh_Hans: Extra Extra Large
           pt_BR: Extra Extra Large
+          ru_RU: Сверхбольшой
       - value: huge
         label:
           en_US: Huge
           zh_Hans: Huge
           pt_BR: Huge
+          ru_RU: Огромный
 extra:
   python:
     source: tools/google_image_search.py

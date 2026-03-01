@@ -1,15 +1,17 @@
 identity:
   name: google_search
-  author: Dify
+  author: juzzy
   label:
     en_US: GoogleSearch
     zh_Hans: GoogleSearch
     pt_BR: GoogleSearch
+    ru_RU: Поиск Google
 description:
   human:
     en_US: A tool for performing a Google search and extracting snippets and webpages. Input should be a search query.
     zh_Hans: A tool for performing a Google search and extracting snippets and webpages. Input should be a search query.
     pt_BR: A tool for performing a Google search and extracting snippets and webpages. Input should be a search query.
+    ru_RU: Инструмент для выполнения поиска Google и извлечения сниппетов и веб-страниц. На вход подаётся поисковый запрос.
   llm: A tool for performing a Google search and extracting snippets and webpages. Input should be a search query.
 parameters:
   - name: query
@@ -19,10 +21,12 @@ parameters:
       en_US: Query string
       zh_Hans: Query string
       pt_BR: Query string
+      ru_RU: Поисковый запрос
     human_description:
       en_US: used for searching
       zh_Hans: used for searching
       pt_BR: used for searching
+      ru_RU: используется для поиска
     llm_description: keywords for searching
     form: llm
   - name: language_code
@@ -32,10 +36,12 @@ parameters:
       en_US: Language code
       zh_Hans: Language code
       pt_BR: Language code
+      ru_RU: Код языка
     human_description:
       en_US: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
       zh_Hans: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
       pt_BR: Parameter defines the language to use for the Google search. It's a two-letter language code. (e.g., en for English, es for Spanish, or fr for French).
+      ru_RU: Двухбуквенный код языка для поиска Google (например, en — английский, es — испанский, fr — французский).
     llm_description: "(Optional) This parameter specifies the language used for Google searches. In most cases, you don't need to explicitly specify this parameter. Some effective examples: zh-cn, en, ja."
     form: llm
   - name: country_code
@@ -45,10 +51,12 @@ parameters:
       en_US: Country code
       zh_Hans: Country code
       pt_BR: Country code
+      ru_RU: Код страны
     human_description:
       en_US: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
       zh_Hans: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
       pt_BR: Parameter defines the country to use for the Google search. It's a two-letter country code. (e.g., us for the United States, uk for United Kingdom, or fr for France).
+      ru_RU: Двухбуквенный код страны для поиска Google (например, us — США, uk — Великобритания, fr — Франция).
     llm_description: "(Optional) This parameter defines the country used for Google search. In most cases, you don't need to explicitly specify this parameter. Some effective examples: cn, us, uk, jp."
     form: llm
   - name: num
@@ -59,10 +67,12 @@ parameters:
       en_US: Max results
       zh_Hans: Max results
       pt_BR: Max results
+      ru_RU: Макс. результатов
     human_description:
       en_US: Number of results to return (1-10).
       zh_Hans: Number of results to return (1-10).
       pt_BR: Number of results to return (1-10).
+      ru_RU: Количество результатов (1-10).
     llm_description: "(Optional) Number of search results to return. Must be between 1 and 10."
     form: form
   - name: as_agent_tool
@@ -74,10 +84,12 @@ parameters:
       en_US: Used in Agent nodes
       zh_Hans: Used in Agent nodes
       pt_BR: Used in Agent nodes
+      ru_RU: Использовать в узлах Agent
     human_description:
       en_US: Default is False. The node behaves differently in workflow/chatflow calls versus when used as a tool within an Agent, resulting in different return formats. In Agent mode, the context template is optimized to clearly highlight key information. Make sure to enable this parameter when using the Agent mode.
       zh_Hans: Default is False. The node behaves differently in workflow/chatflow calls versus when used as a tool within an Agent, resulting in different return formats. In Agent mode, the context template is optimized to clearly highlight key information. Make sure to enable this parameter when using the Agent mode.
       pt_BR: Default is False. The node behaves differently in workflow/chatflow calls versus when used as a tool within an Agent, resulting in different return formats. In Agent mode, the context template is optimized to clearly highlight key information. Make sure to enable this parameter when using the Agent mode.
+      ru_RU: По умолчанию False. В режиме Agent формат вывода оптимизирован для выделения ключевой информации. Включите этот параметр при использовании в режиме Agent.
     llm_description: Default is False. The node behaves differently in workflow/chatflow calls versus when used as a tool within an Agent, resulting in different return formats. In Agent mode, the context template is optimized to clearly highlight key information. Make sure to enable this parameter when using the Agent mode.
 extra:
   python:

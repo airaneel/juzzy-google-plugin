@@ -15,13 +15,13 @@ class GoogleImageSearchTool(Tool):
         max_results = min(int(tool_parameters.get("max_results", 3)), 10)
         img_size = tool_parameters.get("imgsz", "")
 
-        if hl not in VALID_LANGUAGES:
+        if VALID_LANGUAGES is None or hl not in VALID_LANGUAGES:
             yield self.create_text_message(
                 f"Invalid 'hl' parameter: {hl}. Please use a valid language code (e.g., en, es, fr)."
             )
             return
 
-        if gl not in VALID_COUNTRIES:
+        if VALID_COUNTRIES is None or gl not in VALID_COUNTRIES:
             yield self.create_text_message(
                 f"Invalid 'gl' parameter: {gl}. Please use a valid country code (e.g., us, uk, fr)."
             )
@@ -50,24 +50,7 @@ class GoogleImageSearchTool(Tool):
                 .execute()
             )
 
-            items = response.get("items", [])
-            markdown_result = "\n\n"
-            json_result = []
-            for item in items:
-                image_info = item.get("image", {})
-                image_url = item.get("link", "")
-                parsed = {
-                    "title": item.get("title", ""),
-                    "image": image_url,
-                    "thumbnail": image_info.get("thumbnailLink", ""),
-                    "url": image_info.get("contextLink", ""),
-                    "height": image_info.get("height", ""),
-                    "width": image_info.get("width", ""),
-                    "source": item.get("displayLink", ""),
-                }
-                markdown_result += f"![{parsed['title']}]({image_url})"
-                json_result.append(self.create_json_message(parsed))
-            yield from [self.create_text_message(markdown_result)] + json_result
+            yield self.create_json_message(response)
 
         except HttpError as e:
             yield self.create_text_message(f"Google API error ({e.resp.status}): {e._get_reason()}")
