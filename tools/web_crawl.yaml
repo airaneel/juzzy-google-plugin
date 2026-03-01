@@ -12,7 +12,7 @@ description:
     zh_Hans: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     pt_BR: Fetches a web page and extracts the main content as clean markdown. Use this to get full page content from URLs returned by Google Search.
     ru_RU: Загружает веб-страницу и извлекает основное содержимое в формате markdown. Используйте для получения полного контента по URL из результатов Google Search.
-  llm: Fetches a web page URL and extracts the main content as clean markdown text, removing navigation, ads, and boilerplate. Returns the article text with metadata (title, author, date). Use this after Google Search to get full page content from the result URLs. For PDF URLs, pass a query to extract the most relevant pages.
+  llm: "Fetches a web page URL and extracts the main content as clean markdown text. IMPORTANT: For PDF URLs (ending in .pdf), you MUST provide the query parameter or the extraction will fail. The query is used to find and return the most relevant pages from the PDF."
 parameters:
   - name: url
     type: string
@@ -58,7 +58,7 @@ parameters:
       zh_Hans: Optional search query to extract the most relevant pages from PDF documents.
       pt_BR: Optional search query to extract the most relevant pages from PDF documents.
       ru_RU: Поисковый запрос для извлечения наиболее релевантных страниц из PDF-документов.
-    llm_description: "(Optional) When crawling a PDF URL, pass the search query here to extract only the most relevant pages instead of the first pages. The tool scores each page by keyword matches and returns the top 5."
+    llm_description: "REQUIRED for PDF URLs. Pass the search query to extract the most relevant pages. Without this, PDF extraction will fail. For HTML pages this is ignored."
     form: llm
 extra:
   python:
