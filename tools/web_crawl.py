@@ -1,10 +1,9 @@
-import io
 import urllib.request
 from typing import Any, Generator
 
+import pymupdf
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
-from pypdf import PdfReader
 from trafilatura import extract, fetch_url
 
 _USER_AGENT = "Mozilla/5.0 (compatible; DifyBot/1.0)"
@@ -27,31 +26,21 @@ def _extract_pdf(url: str, max_length: int, query: str) -> str | None:
             if len(pdf_bytes) > _MAX_PDF_BYTES:
                 return None
 
-        reader = PdfReader(io.BytesIO(pdf_bytes))
+        doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
-        # Extract text from each page
-        page_texts: list[tuple[int, str]] = []
-        for i, page in enumerate(reader.pages):
-            text = page.extract_text()
-            if text and text.strip():
-                page_texts.append((i + 1, text.strip()))
+        selected: list[tuple[int, str]] = []
+        for page in doc:
+            if page.search_for(query):
+                text = page.get_text().strip()
+                if text:
+                    selected.append((page.number + 1, text))
+                    if len(selected) >= _TOP_K_PAGES:
+                        break
 
-        if not page_texts:
-            return None
-
-        # Select pages containing any query word
-        query_words = set(query.lower().split())
-        selected = [
-            (num, text)
-            for num, text in page_texts
-            if query_words & set(text.lower().split())
-        ][:_TOP_K_PAGES]
+        doc.close()
 
         if not selected:
             return None
-
-        # Sort by page number for readability
-        selected.sort(key=lambda x: x[0])
 
         parts = [f"--- Page {num} ---\n{text}" for num, text in selected]
         content = "\n\n".join(parts)
