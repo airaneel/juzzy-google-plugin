@@ -1,6 +1,6 @@
 [project]
 name = "juzzy-google-plugin"
-version = "0.2.0"
+version = "0.2.2"
 description = "Dify plugin for Google Search, Image Search, and Web Crawl"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -33,5 +33,5 @@ explicit_package_bases = true
 mypy_path = "."
 
 [[tool.mypy.overrides]]
-module = ["dify_plugin.*", "google.*", "googleapiclient.*", "trafilatura.*", "loguru.*"]
+module = ["dify_plugin.*", "google.*", "googleapiclient.*", "trafilatura.*"]
 ignore_missing_imports = true

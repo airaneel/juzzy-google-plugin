@@ -5,41 +5,11 @@ from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from loguru import logger
 
 from tools.utils import VALID_COUNTRIES, VALID_LANGUAGES
 
 
 class GoogleSearchTool(Tool):
-    @staticmethod
-    def _set_params_language_code(params: dict[str, str], tool_parameters: dict[str, object]) -> None:
-        try:
-            language_code = tool_parameters.get("language_code") or tool_parameters.get("hl")
-            if (
-                language_code
-                and isinstance(language_code, str)
-                and isinstance(VALID_LANGUAGES, set)
-                and language_code in VALID_LANGUAGES
-            ):
-                params["hl"] = language_code
-        except Exception as e:
-            logger.warning(f"Failed to set language code parameter: {e}")
-
-    @staticmethod
-    def _set_params_country_code(params: dict[str, str], tool_parameters: dict[str, object]) -> None:
-        try:
-            country_code = tool_parameters.get("country_code") or tool_parameters.get("gl")
-            if (
-                country_code
-                and isinstance(country_code, str)
-                and VALID_COUNTRIES
-                and isinstance(VALID_COUNTRIES, set)
-                and country_code in VALID_COUNTRIES
-            ):
-                params["gl"] = country_code
-        except Exception as e:
-            logger.warning(f"Failed to set country code parameter: {e}")
-
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage]:
         query = tool_parameters.get("query", "")
 
@@ -48,8 +18,12 @@ class GoogleSearchTool(Tool):
         num = min(max(int(tool_parameters.get("num", 10)), 1), 10)
 
         optional_params: dict[str, str] = {}
-        self._set_params_country_code(optional_params, tool_parameters)
-        self._set_params_language_code(optional_params, tool_parameters)
+        hl = tool_parameters.get("language_code") or tool_parameters.get("hl")
+        if isinstance(hl, str) and VALID_LANGUAGES and hl in VALID_LANGUAGES:
+            optional_params["hl"] = hl
+        gl = tool_parameters.get("country_code") or tool_parameters.get("gl")
+        if isinstance(gl, str) and VALID_COUNTRIES and gl in VALID_COUNTRIES:
+            optional_params["gl"] = gl
 
         try:
             service = build("customsearch", "v1", developerKey=api_key)

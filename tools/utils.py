@@ -1,7 +1,9 @@
 import json
 from pathlib import Path
 
-from loguru import logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 PROJECT_PATH = Path(__file__).parent
 
